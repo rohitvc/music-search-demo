@@ -1,12 +1,32 @@
 .dropdown {
     display: inline-block;
+    position: relative;
+    margin-right: 1rem;
+}
+
+.dropdown::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 14px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #fff;
+    pointer-events: none;
+}
+
+.active.dropdown::after {
+    border-top: 0;
+    border-bottom: 5px solid #fff;
 }
 
 .dropdown-toggle-button {
     width: 250px;
     position: relative;
     padding: 3px 4px;
-    min-height: 30px;
+    min-height: 34px;
     border: 1px solid #ddd;
     font-size: 1em;
     outline: none;
@@ -18,7 +38,7 @@
 }
 
 .dropdown-list {
-    top: 30px;
+    top: 34px;
     left: 0;
     display: inline-block;
     position: absolute;

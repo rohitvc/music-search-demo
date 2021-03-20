@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./dropdown.css";
 
-function Dropdown() {
+function Dropdown({ dropdownValues, setDropdownValue }) {
   const [dropdownState, toggleDropdown] = useState(false);
-  const [dropdownValues, setDropdownValue] = useState({
-    all: false,
-    title: false,
-    description: false,
-    keyword: false,
-  });
+  const checkAllDropdownValues = useCallback(() => {
+    return Object.entries(dropdownValues)
+      .filter((value) => value[0] !== "all")
+      .every((value) => value[1] === true);
+  }, [dropdownValues]);
 
   useEffect(() => {
-    const checkAllDropdownValues = () => {
-      return Object.entries(dropdownValues)
-        .filter((value) => value[0] !== "all")
-        .every((value) => value[1] === true);
-    };
     window.onclick = function () {
       toggleDropdown(false);
     };
@@ -35,7 +29,7 @@ function Dropdown() {
         });
       }
     }
-  }, [dropdownValues]);
+  }, [dropdownValues, setDropdownValue, checkAllDropdownValues]);
 
   const handleDropdownChange = ({ target }) => {
     if (target.name === "all") {
@@ -53,15 +47,27 @@ function Dropdown() {
     });
   };
 
-  const selectedLabel = () => {}
+  const selectedLabel = () => {
+    if (checkAllDropdownValues()) {
+      return "All selected";
+    }
+    const count = Object.values(dropdownValues).reduce(
+      (acc, value) => acc + value,
+      0
+    );
+    if (count > 0) {
+      return `${count} selected`;
+    }
+    return `Search options`;
+  };
 
   return (
-    <div className="dropdown" onClick={(e) => e.stopPropagation()}>
+    <div className={`dropdown ${dropdownState ? 'active' : ''}`} onClick={(e) => e.stopPropagation()}>
       <button
         onClick={() => toggleDropdown(!dropdownState)}
         className="dropdown-toggle-button"
       >
-        Search locations
+        {selectedLabel()}
       </button>
       {dropdownState && (
         <ul className="dropdown-list">
@@ -108,14 +114,14 @@ function Dropdown() {
             </label>
           </li>
           <li className="list-item">
-            <label className="list-item-label" htmlFor="keyword">
-              KEYWORD
+            <label className="list-item-label" htmlFor="keywords">
+              KEYWORDS
               <input
                 className="list-item-input"
                 type="checkbox"
-                id="keyword"
-                name="keyword"
-                checked={dropdownValues.keyword}
+                id="keywords"
+                name="keywords"
+                checked={dropdownValues.keywords}
                 onChange={handleDropdownChange}
               />
               <span className="checkbox"></span>

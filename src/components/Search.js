@@ -1,14 +1,31 @@
 import React from "react";
-import './search.css'
+import "./search.css";
 
-function Search() {
+function Search({ search, onSearchChange, onSearchSubmit }) {
+  const onSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearchSubmit();
+    }
+  };
+
   return (
     <div className="search-container">
       <label className="search-label" htmlFor="search">
         Search
-        <input placeholder="Search box" className="search-input" type="text" id="search" name="search" />
+        <input
+          value={search}
+          onChange={onSearchChange}
+          onKeyDown={onSearchKeyDown}
+          placeholder="Search box"
+          className="search-input"
+          type="text"
+          id="search"
+          name="search"
+        />
       </label>
-      <button className="search-button">Search</button>
+      <button onClick={onSearchSubmit} className="search-button">
+        Search
+      </button>
     </div>
   );
 }

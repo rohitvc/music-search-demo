@@ -1,0 +1,10 @@
+.header-container {
+    display: flex;
+    position: fixed;
+    flex-wrap: wrap;
+    top: 0;
+    background: #535353;
+    width: 100%;
+    align-items: flex-end;
+    padding: 0.5rem 1rem;
+}
